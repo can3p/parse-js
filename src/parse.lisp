@@ -133,6 +133,8 @@
          (:throw (let ((ex (expression))) (semicolon) (as :throw ex)))
          (:try (try*))
          (:var (prog1 (var*) (semicolon)))
+         (:const (prog1 (const*) (semicolon)))
+         (:let (prog1 (let**) (semicolon)))
          (:while (as :while (parenthesised) (with-label-scope :loop label (statement))))
          (:with (as :with (parenthesised) (statement)))
          (t (unexpected token))))
@@ -247,6 +249,12 @@
 
   (def var* (&optional no-in)
     (as :var (vardefs no-in)))
+
+  (def const* (&optional no-in)
+    (as :const (vardefs no-in)))
+
+  (def let** (&optional no-in)
+    (as :let (vardefs no-in)))
 
   (def new* ()
     (let ((newexp (expr-atom nil)))
